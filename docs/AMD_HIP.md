@@ -84,7 +84,8 @@ Vulkan2    0000:06:00.0  discrete     16368 MiB  AMD Radeon RX 6950 XT (RADV NAV
 Then, in `strata-<model>.json`, point `"exe"` in the `"vision"` section at a copy of that `strata-vision`, and set
 `"gpu": true` and `"device"` to the PCI address of the GPU it should use (the engine's own card, another card, or the
 integrated one). Use the address, not the number: Vulkan numbers the GPUs its own way, not as HIP does (`--gpu`,
-`"gpu"`), and `"cuda_device"` does not reach a Vulkan encoder. Without `"device"` the encoder takes the first discrete
+`"gpu"`), and `"cuda_device"` does not reach a Vulkan encoder. The address changes too when a card is missing at boot (the cards behind later
+ports get lower bus numbers), so after a card drops out, check `--list-devices` again. Without `"device"` the encoder takes the first discrete
 GPU in Vulkan's order, which can be the engine's card. When it shares the engine's card, raise `--vram-reserve-mib` in
 `"args"` to 1300: with the 700 that images get by default the encoder still runs, with no error, but 3 to 10 times
 slower (it needs about 1 GB of VRAM at 1,024 image tokens).
